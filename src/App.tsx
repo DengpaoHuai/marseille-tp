@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./App.css";
 
 type Planet = {
@@ -34,13 +34,15 @@ function App() {
     console.log(data);
     setPlanets(data);
   };*/
-
+  //
   useEffect(() => {
     fetch("https://swapi.dev/api/planets")
       .then((response) => response.json())
       .then((data: PlanetResponse) => setPlanets(data.results))
       .catch((error) => console.log(error));
   }, []);
+
+  const handleClick = () => {};
 
   return (
     <>
@@ -51,6 +53,7 @@ function App() {
           </Fragment>
         );
       })}
+      <button onClick={handleClick}>coucou</button>
     </>
   );
 }
