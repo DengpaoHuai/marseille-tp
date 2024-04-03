@@ -1,16 +1,29 @@
-import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
-type Inputs = {
-  name: string;
-  date: string;
-};
+import { InferType, date, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useContext } from "react";
+import { TravelContext } from "../contexts/TravelContextProvider";
 
 const CreateTravel = () => {
+  const data = useContext(TravelContext);
+
+  console.log(data);
+
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const travelSchema = object({
+    name: string().min(4).required(),
+    date: date().required(),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<InferType<typeof travelSchema>>({
+    resolver: yupResolver(travelSchema),
+  });
+
+  const onSubmit: SubmitHandler<InferType<typeof travelSchema>> = (data) => {
     fetch("https://crudcrud.com/api/dd4cdbda378341509e40b77fa154939f/travels", {
       method: "POST",
       headers: {
@@ -23,7 +36,7 @@ const CreateTravel = () => {
     });
   };
 
-  console.log(register("name"));
+  console.log(errors);
 
   return (
     <div>
@@ -32,6 +45,7 @@ const CreateTravel = () => {
         <input {...register("name")} />
         <input type="date" {...register("date")} />
         <button type="submit">Create</button>
+        {errors.name && <p>{errors.name.message}</p>}
       </form>
     </div>
   );
