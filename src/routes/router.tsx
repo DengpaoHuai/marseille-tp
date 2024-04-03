@@ -2,7 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import PlanetTsList from "../pages/PlanetTSList";
 import Example1 from "../pages/Example1";
 import Example2 from "../pages/Example2";
-
+import CreateTravel from "../pages/CreateTravel";
+import TravelsList from "../pages/TravelsList";
 const router = createBrowserRouter([
   {
     path: "/planets",
@@ -19,6 +20,14 @@ const router = createBrowserRouter([
   {
     element: <div>404</div>,
     path: "*",
+  },
+  {
+    element: <CreateTravel></CreateTravel>,
+    path: "/create_travel",
+  },
+  {
+    element: <TravelsList></TravelsList>,
+    path: "/list_travels",
   },
 ]);
 
