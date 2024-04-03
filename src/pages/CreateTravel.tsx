@@ -3,37 +3,27 @@ import { useNavigate } from "react-router-dom";
 import { InferType, date, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext } from "react";
-import { TravelContext } from "../contexts/TravelContextProvider";
+import { Travel, TravelContext } from "../contexts/TravelContextProvider";
+
+const travelSchema = object({
+  name: string().min(4).required(),
+  date: string().required(),
+});
 
 const CreateTravel = () => {
-  const data = useContext(TravelContext);
-
-  console.log(data);
-
+  const { addTravel } = useContext(TravelContext);
   const navigate = useNavigate();
-  const travelSchema = object({
-    name: string().min(4).required(),
-    date: date().required(),
-  });
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<InferType<typeof travelSchema>>({
+  } = useForm<Omit<Travel, "_id">>({
     resolver: yupResolver(travelSchema),
   });
 
-  const onSubmit: SubmitHandler<InferType<typeof travelSchema>> = (data) => {
-    fetch("https://crudcrud.com/api/dd4cdbda378341509e40b77fa154939f/travels", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then(() => {
-      console.log("ok");
-      navigate("/list_travels");
-    });
+  const onSubmit: SubmitHandler<Omit<Travel, "_id">> = async (data) => {
+    await addTravel(data);
+    navigate("/list_travels");
   };
 
   console.log(errors);
