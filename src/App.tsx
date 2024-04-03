@@ -1,19 +1,9 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
-import PlanetList from "./pages/PlanetList.jsx";
-import PlanetTsList from "./pages/PlanetTSList.js";
+import { RouterProvider } from "react-router-dom";
+import router from "./routes/router";
 
-const client = new QueryClient({
-  defaultOptions: {
-    queries: {},
-  },
-});
 function App() {
-  return (
-    <QueryClientProvider client={client}>
-      <PlanetList></PlanetList>
-    </QueryClientProvider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;
