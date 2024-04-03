@@ -1,11 +1,18 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
-import PlanetsList from "./pages/PlanetsList";
+import PlanetList from "./pages/PlanetList.jsx";
+import PlanetTsList from "./pages/PlanetTSList.js";
 
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {},
+  },
+});
 function App() {
   return (
-    <>
-      <PlanetsList></PlanetsList>
-    </>
+    <QueryClientProvider client={client}>
+      <PlanetTsList></PlanetTsList>
+    </QueryClientProvider>
   );
 }
 
