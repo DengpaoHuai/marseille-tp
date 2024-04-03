@@ -1,6 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useState } from "react";
+import useFetch from "../hooks/useFetch";
 
 type Planet = {
   name: string;
@@ -27,48 +25,13 @@ type PlanetResponse = {
 };
 
 const PlanetTsList = () => {
-  const [planetResponse, setPlanetResponse] = useState<PlanetResponse>({
-    count: 0,
-    next: "",
-    previous: "",
-    results: [],
-  });
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchPlanets = async (url: string) => {
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      setPlanetResponse(data);
-      setLoading(false);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else if (typeof error === "string") {
-        setError(error);
-      } else {
-        setError("An error occurred");
-      }
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPlanets("https://swapi.dev/api/planets/");
-  }, []);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
+  const { data, loading, error } = useFetch<PlanetResponse>(
+    "https://swapi.dev/api/planets/"
+  );
 
   return (
     <>
-      {planetResponse?.results.map((planet) => (
+      {data?.results.map((planet) => (
         <div key={planet.name}>
           <h2>{planet.name}</h2>
           <p>Population: {planet.population}</p>
@@ -76,23 +39,6 @@ const PlanetTsList = () => {
           <p>Terrain: {planet.terrain}</p>
         </div>
       ))}
-      <button
-        disabled={!planetResponse?.previous}
-        onClick={() =>
-          planetResponse?.previous && fetchPlanets(planetResponse.previous)
-        }
-      >
-        Previous
-      </button>
-
-      <button
-        disabled={!planetResponse?.next}
-        onClick={() =>
-          planetResponse?.next && fetchPlanets(planetResponse.next)
-        }
-      >
-        Next
-      </button>
     </>
   );
 };

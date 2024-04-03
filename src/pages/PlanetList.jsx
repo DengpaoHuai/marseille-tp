@@ -1,35 +1,26 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import useFetch from "../hooks/useFetch";
 
 const PlanetList = () => {
-  const [planetsResponse, setPlanetsResponse] = useState({
-    results: [],
-    count: 0,
-    next: null,
-    previous: null,
-  });
+  const { data, loading, error } = useFetch("https://swapi.dev/api/planets/");
+  const { data: starships } = useFetch("https://swapi.dev/api/starships/");
 
-  const getPlanets = async (url) => {
-    const response = await fetch(url);
-    const data = await response.json();
-    setPlanetsResponse(data);
-  };
-
-  useEffect(() => {
-    getPlanets("https://swapi.dev/api/planets/");
-  }, []);
-
+  console.log("rerender");
+  /*
   const handleNext = () => {
     getPlanets(planetsResponse.next);
   };
 
   const handlePrevious = () => {
     getPlanets(planetsResponse.previous);
-  };
-
+  };*/
+  if (error) {
+    return <div>{error}</div>;
+  }
   return (
     <>
-      {planetsResponse.results.map((planet) => (
+      {data?.results.map((planet) => (
         <div key={planet.name}>
           <h2>{planet.name}</h2>
           <p>Population: {planet.population}</p>
@@ -37,12 +28,14 @@ const PlanetList = () => {
           <p>Terrain: {planet.terrain}</p>
         </div>
       ))}
-      <button disabled={!planetsResponse.previous} onClick={handlePrevious}>
-        Previous
-      </button>
-      <button disabled={!planetsResponse.next} onClick={handleNext}>
-        Next
-      </button>
+      {starships?.results.map((starship) => (
+        <div key={starship.name}>
+          <h2>{starship.name}</h2>
+          <p>Model: {starship.model}</p>
+          <p>Manufacturer: {starship.manufacturer}</p>
+          <p>Cost in credits: {starship.cost_in_credits}</p>
+        </div>
+      ))}
     </>
   );
 };

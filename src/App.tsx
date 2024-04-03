@@ -11,7 +11,7 @@ const client = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={client}>
-      <PlanetTsList></PlanetTsList>
+      <PlanetList></PlanetList>
     </QueryClientProvider>
   );
 }
