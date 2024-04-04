@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext } from "react";
 import { Travel, TravelContext } from "../contexts/TravelContextProvider";
 import { useTravel } from "../store/useTravelStore";
+import { postTravel } from "../services/travels.service";
 
 const travelSchema = object({
   name: string().min(4).required(),
@@ -25,7 +26,7 @@ const CreateTravel = () => {
   });
 
   const onSubmit: SubmitHandler<Omit<Travel, "_id">> = async (data) => {
-    await createTravel(data);
+    await postTravel(data);
     navigate("/list_travels");
   };
 

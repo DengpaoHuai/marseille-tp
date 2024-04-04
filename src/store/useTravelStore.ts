@@ -50,12 +50,6 @@ export const useTravel = () => {
     deleteTravelById,
     updateTravelById,
   } = useTravelStore();
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    if (travels.length) return;
-    setLoading(true);
-    setTravels().then(() => setLoading(false));
-  }, []);
 
   return { travels, loading, createTravel, deleteTravelById, updateTravelById };
 };

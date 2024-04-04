@@ -27,11 +27,11 @@ const TravelContextProvider: React.FC<TravelContextProviderProps> = ({
   const [travels, setTravels] = useState<Array<Travel>>([]);
 
   useEffect(() => {
-    fetch("https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels")
+    /*fetch("https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels")
       .then((response) => response.json())
       .then((data) => {
         setTravels(data);
-      });
+      });*/
   }, []);
 
   const deleteTravelById = async (id: string) => {

@@ -1,22 +1,21 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Travel } from "../contexts/TravelContextProvider";
-import { useQuery } from "@tanstack/react-query";
-import { getTravels } from "../services/travels.service";
+import { useTravel } from "../store/useTravelStore";
 
 const TravelsList = () => {
-  const { data: travels } = useQuery({
-    queryKey: ["toto"],
-    queryFn: getTravels,
-    staleTime: 10000000,
-    gcTime: 10000000,
-  });
+  const { travels, loading, deleteTravelById } = useTravel();
   const navigate = useNavigate();
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <div>
       <h1>Travels List</h1>
       <Link to="/create_travel">Create Travel</Link>
-      {travels?.map((travel: Travel) => (
+      {travels.map((travel: Travel) => (
         <div key={travel._id}>
           <h2>{travel.name}</h2>
           <p>{travel.date}</p>
@@ -29,7 +28,7 @@ const TravelsList = () => {
           </button>
           <button
             onClick={() => {
-              //  deleteTravelById(travel._id);
+              deleteTravelById(travel._id);
             }}
           >
             supprimer

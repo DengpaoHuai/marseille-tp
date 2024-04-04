@@ -2,7 +2,7 @@ import { Travel } from "../contexts/TravelContextProvider";
 import { RedFetch } from "../utils/redFetch";
 
 const instance = new RedFetch(
-  "https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652"
+  "https://crudcrud.com/api/ea11dccf31d14e46b91ea9185628e5fa"
 );
 
 type GetTravelsFn = () => Promise<Travel[]>;
@@ -15,6 +15,9 @@ export const postTravel: PostTravelFn = async (travel: Omit<Travel, "_id">) => {
   return await instance.fetch("/travels", {
     method: "POST",
     body: JSON.stringify(travel),
+    headers: {
+      "content-type": "application/json",
+    },
   });
 };
 

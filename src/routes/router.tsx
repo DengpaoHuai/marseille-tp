@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import PlanetTsList from "../pages/PlanetTSList";
+import PlanetTsList from "../pages/PlanetsList.query";
 import Example1 from "../pages/Example1";
 import Example2 from "../pages/Example2";
 import CreateTravel from "../pages/CreateTravel";
