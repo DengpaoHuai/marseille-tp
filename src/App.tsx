@@ -10,11 +10,7 @@ import store from "./store/store";
 const queryClient = new QueryClient();
 
 function App() {
-  return (
-    <Provider store={store}>
-      <RouterProvider router={router}></RouterProvider>
-    </Provider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

@@ -1,13 +1,23 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Travel } from "../contexts/TravelContextProvider";
-import { useTravel } from "../store/useTravelStore";
+import { Travel, TravelContext } from "../contexts/TravelContextProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { setTravels } from "../store/slices/travels.slice";
+import { StoreState } from "../store/store";
+import { getAllTravels } from "../store/actions/travels.thunk";
 
 const TravelsList = () => {
-  const { travels, loading } = useTravel();
+  const { travels, isLoading } = useSelector(
+    (state: StoreState) => state.travels
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  if (loading) {
+  useEffect(() => {
+    dispatch(getAllTravels());
+  }, []);
+
+  if (isLoading) {
     return <h1>Loading...</h1>;
   }
 
