@@ -1,6 +1,12 @@
 import { create } from "zustand";
 import { Travel } from "../contexts/TravelContextProvider";
 import { useEffect, useState } from "react";
+import {
+  deleteTravel,
+  getTravels,
+  postTravel,
+  putTravel,
+} from "../services/travels.service";
 
 type TravelStore = {
   travels: Travel[];
@@ -13,48 +19,21 @@ type TravelStore = {
 const useTravelStore = create<TravelStore>((set) => ({
   travels: [],
   setTravels: async () => {
-    const response = await fetch(
-      "https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels"
-    );
-    const data: Travel[] = await response.json();
-    set({ travels: data });
+    const response = await getTravels();
+    set({ travels: response });
   },
   createTravel: async (travel: Omit<Travel, "_id">) => {
-    const response = await fetch(
-      "https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(travel),
-      }
-    );
-    const data: Travel = await response.json();
+    const data = await postTravel(travel);
     set((state) => ({ travels: [...state.travels, data] }));
   },
   deleteTravelById: async (id: string) => {
-    await fetch(
-      `https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    await deleteTravel(id);
     set((state) => ({
       travels: state.travels.filter((travel) => travel._id !== id),
     }));
   },
   updateTravelById: async (id: string, travel: Omit<Travel, "_id">) => {
-    await fetch(
-      `https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(travel),
-      }
-    );
+    await putTravel(id, travel);
     set((state) => ({
       travels: state.travels.map((t) =>
         t._id === id ? { ...t, ...travel } : t
