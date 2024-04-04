@@ -8,12 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient();
 
 function App() {
-  return (
-    <TravelContextProvider>
-      <p className="logo">coucou c moi</p>
-      <RouterProvider router={router}></RouterProvider>
-    </TravelContextProvider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;
