@@ -4,6 +4,7 @@ import { InferType, date, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext } from "react";
 import { Travel, TravelContext } from "../contexts/TravelContextProvider";
+import { useTravel } from "../store/useTravelStore";
 
 const travelSchema = object({
   name: string().min(4).required(),
@@ -11,9 +12,10 @@ const travelSchema = object({
 });
 
 const UpdateTravel = () => {
+  const { updateTravelById } = useTravel();
   const data = useLoaderData() as Travel;
   const { id } = useParams();
-  const { updateTravelById } = useContext(TravelContext);
+
   const navigate = useNavigate();
   const {
     register,

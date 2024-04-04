@@ -12,7 +12,7 @@ const travelSchema = object({
 });
 
 const CreateTravel = () => {
-  const { travels, loading } = useTravel();
+  const { travels, loading, createTravel } = useTravel();
   console.log(travels, loading);
   const { addTravel } = useContext(TravelContext);
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const CreateTravel = () => {
   });
 
   const onSubmit: SubmitHandler<Omit<Travel, "_id">> = async (data) => {
-    await addTravel(data);
+    await createTravel(data);
     navigate("/list_travels");
   };
 
