@@ -9,7 +9,7 @@ const CreateTravel = () => {
   const mutate = useMutation({
     mutationFn: async (data: Omit<Travel, "_id">) => {
       const response = await fetch(
-        "https://crudcrud.com/api/dd4cdbda378341509e40b77fa154939f/travels",
+        "https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels",
         {
           method: "POST",
           headers: {

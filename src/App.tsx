@@ -10,6 +10,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <TravelContextProvider>
+      <p className="logo">coucou c moi</p>
       <RouterProvider router={router}></RouterProvider>
     </TravelContextProvider>
   );

@@ -10,6 +10,8 @@ type TravelContextType = {
   travels: Array<Travel>;
   deleteTravelById: (id: string) => Promise<string>;
   addTravel: (travel: Omit<Travel, "_id">) => Promise<void>;
+  updateTravelById: (id: string, travel: Omit<Travel, "_id">) => Promise<void>;
+  getTravelById: (id: string) => Travel | undefined;
 };
 export const TravelContext = createContext<TravelContextType>(
   {} as TravelContextType
@@ -25,7 +27,7 @@ const TravelContextProvider: React.FC<TravelContextProviderProps> = ({
   const [travels, setTravels] = useState<Array<Travel>>([]);
 
   useEffect(() => {
-    fetch("https://crudcrud.com/api/dd4cdbda378341509e40b77fa154939f/travels")
+    fetch("https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels")
       .then((response) => response.json())
       .then((data) => {
         setTravels(data);
@@ -34,7 +36,7 @@ const TravelContextProvider: React.FC<TravelContextProviderProps> = ({
 
   const deleteTravelById = async (id: string) => {
     await fetch(
-      `https://crudcrud.com/api/dd4cdbda378341509e40b77fa154939f/travels/${id}`,
+      `https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels/${id}`,
       {
         method: "DELETE",
       }
@@ -45,7 +47,7 @@ const TravelContextProvider: React.FC<TravelContextProviderProps> = ({
 
   const addTravel = async (travel: Omit<Travel, "_id">) => {
     const response = await fetch(
-      "https://crudcrud.com/api/dd4cdbda378341509e40b77fa154939f/travels",
+      "https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels",
       {
         method: "POST",
         headers: {
@@ -58,8 +60,41 @@ const TravelContextProvider: React.FC<TravelContextProviderProps> = ({
     setTravels([...travels, newTravel]);
   };
 
+  const getTravelById = (id: string) => {
+    return travels.find((travel) => travel._id === id);
+  };
+
+  const updateTravelById = async (id: string, travel: Omit<Travel, "_id">) => {
+    await fetch(
+      `https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(travel),
+      }
+    );
+    setTravels(
+      travels.map((t) => {
+        if (t._id === id) {
+          return { ...t, ...travel };
+        }
+        return t;
+      })
+    );
+  };
+
   return (
-    <TravelContext.Provider value={{ travels, deleteTravelById, addTravel }}>
+    <TravelContext.Provider
+      value={{
+        travels,
+        deleteTravelById,
+        addTravel,
+        updateTravelById,
+        getTravelById,
+      }}
+    >
       {children}
     </TravelContext.Provider>
   );

@@ -8,7 +8,7 @@ const TravelContextProvider = ({ children }) => {
   useEffect(() => {
     //const data = JSON.parse(sessionStorage.getItem("travels"));
     // if (data) return setTravels(data);
-    fetch("https://crudcrud.com/api/dd4cdbda378341509e40b77fa154939f/travels")
+    fetch("https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels")
       .then((response) => response.json())
       .then((data) => {
         setTravels(data);
@@ -18,7 +18,7 @@ const TravelContextProvider = ({ children }) => {
 
   const deleteTravelById = async (id) => {
     await fetch(
-      `https://crudcrud.com/api/dd4cdbda378341509e40b77fa154939f/travels/${id}`,
+      `https://crudcrud.com/api/fc63a333024340ec891fb35c31e5c652/travels/${id}`,
       {
         method: "DELETE",
       }
